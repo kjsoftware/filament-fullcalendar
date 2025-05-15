@@ -6,7 +6,9 @@
     <x-filament::section>
         <x-slot name="heading">
             <div class="flex justify-end flex-1 font-normal">
-                {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::PAGE_HEADER_ACTIONS_BEFORE, scopes: [static::class]) }}
+                <div class="flex flex-1 items-center justify-start">
+                    {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::PAGE_HEADER_ACTIONS_BEFORE, scopes: [static::class]) }}
+                </div>
 
                 <x-filament-actions::actions :actions="$this->getCachedHeaderActions()" class="shrink-0" />
 
