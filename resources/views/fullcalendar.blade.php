@@ -5,12 +5,16 @@
 <x-filament-widgets::widget>
     <x-filament::section>
         <x-slot name="heading">
-            <div class="flex justify-end flex-1 font-normal">
-                {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::PAGE_HEADER_ACTIONS_BEFORE, scopes: [static::class]) }}
+            <div class="flex flex-col sm:flex-row sm:justify-between w-full font-normal gap-y-4 sm:gap-y-0">
+                <div class="flex items-center justify-start">
+                    {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::PAGE_HEADER_ACTIONS_BEFORE, scopes: [static::class]) }}
+                </div>
 
-                <x-filament-actions::actions :actions="$this->getCachedHeaderActions()" class="shrink-0" />
+                <div class="flex items-center justify-start sm:justify-end">
+                    <x-filament-actions::actions :actions="$this->getCachedHeaderActions()" class="shrink-0" />
 
-                {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::PAGE_HEADER_ACTIONS_AFTER, scopes: [static::class]) }}
+                    {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::PAGE_HEADER_ACTIONS_AFTER, scopes: [static::class]) }}
+                </div>
             </div>
         </x-slot>
 
