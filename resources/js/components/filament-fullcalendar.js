@@ -15,13 +15,11 @@ export default function fullcalendar({
     eventWillUnmount,
 }) {
     return {
-        title: null,
-
         /** @type Calendar */
         calendar: null,
 
         init() {
-            this.calendar = new Calendar(this.$refs.calendar, {
+            this.calendar = new Calendar(this.$el, {
                 plugins: plugins.map((plugin) => availablePlugins[plugin]),
                 locale,
                 ...(schedulerLicenseKey && { schedulerLicenseKey }),
@@ -29,7 +27,6 @@ export default function fullcalendar({
                 editable,
                 selectable,
                 ...config,
-                headerToolbar: false,
                 locales,
                 eventClassNames,
                 eventContent,
@@ -131,14 +128,6 @@ export default function fullcalendar({
             })
 
             this.calendar.render()
-            this.title = this.calendar.view.title
-            this.listenEvents()
-        },
-
-        listenEvents() {
-            this.calendar.on('datesSet', (info) => {
-                this.title = info.view.title
-            })
 
             window.addEventListener('filament-fullcalendar--refresh', () =>
                 this.calendar.refetchEvents(),

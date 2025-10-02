@@ -19543,11 +19543,10 @@ function MR({
   eventWillUnmount: i
 }) {
   return {
-    title: null,
     /** @type Calendar */
     calendar: null,
     init() {
-      this.calendar = new S3(this.$refs.calendar, {
+      this.calendar = new S3(this.$el, {
         plugins: e.map((a) => tR[a]),
         locale: t,
         ...o && { schedulerLicenseKey: o },
@@ -19555,7 +19554,6 @@ function MR({
         editable: z,
         selectable: n,
         ...b,
-        headerToolbar: !1,
         locales: Md,
         eventClassNames: p,
         eventContent: r,
@@ -19632,12 +19630,7 @@ function MR({
             A
           );
         }
-      }), this.calendar.render(), this.title = this.calendar.view.title, this.listenEvents();
-    },
-    listenEvents() {
-      this.calendar.on("datesSet", (a) => {
-        this.title = a.view.title;
-      }), window.addEventListener(
+      }), this.calendar.render(), window.addEventListener(
         "filament-fullcalendar--refresh",
         () => this.calendar.refetchEvents()
       ), window.addEventListener(
