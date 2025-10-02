@@ -353,7 +353,7 @@ class CalendarWidget extends FullCalendarWidget
 {
     public Model | string | null $model = Event::class;
 
-    protected function getHeaderActions(): array
+    protected function headerActions(): array
     {
         return [
             Actions\CreateAction::make(),
