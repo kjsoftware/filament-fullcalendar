@@ -19629,10 +19629,41 @@ function MR({
             d,
             A
           );
+        },
+        resources: (a, s, l) => {
+          this.$wire.fetchResources(a).then(s).catch(l);
+        },
+        viewDidMount: (a) => {
+          window.dispatchEvent(new CustomEvent("filament-fullcalendar--view-changed", {
+            detail: a
+          }));
+        },
+        datesSet: (a) => {
+          const s = {
+            ...a,
+            start: a.start,
+            end: a.end,
+            view: {
+              ...a.view,
+              type: a.view.type,
+              currentStart: a.view.currentStart,
+              currentEnd: a.view.currentEnd
+            }
+          };
+          window.dispatchEvent(new CustomEvent("filament-fullcalendar--dates-changed", {
+            detail: s
+          }));
+        },
+        loading: (a) => {
+          a || setTimeout(() => {
+            window.dispatchEvent(new CustomEvent("filament-fullcalendar--loaded"));
+          }, 0);
         }
-      }), this.calendar.render(), window.addEventListener(
+      }), this.calendar.render(), this.$el._fullCalendar = this.calendar, window.addEventListener(
         "filament-fullcalendar--refresh",
-        () => this.calendar.refetchEvents()
+        () => {
+          console.log("refresh"), this.calendar.refetchEvents(), this.calendar.refetchResources();
+        }
       ), window.addEventListener(
         "filament-fullcalendar--prev",
         () => this.calendar.prev()
@@ -19645,10 +19676,19 @@ function MR({
       ), window.addEventListener(
         "filament-fullcalendar--view",
         (a) => this.calendar.changeView(a.detail.view)
-      ), window.addEventListener(
-        "filament-fullcalendar--goto",
-        (a) => this.calendar.gotoDate(a.detail.date)
-      );
+      ), window.addEventListener("filament-fullcalendar--goto", (a) => {
+        const s = a.detail.date;
+        this.calendar.gotoDate(s), setTimeout(() => {
+          const l = {
+            view: this.calendar.view,
+            start: this.calendar.view.activeStart,
+            end: this.calendar.view.activeEnd
+          };
+          window.dispatchEvent(new CustomEvent("filament-fullcalendar--dates-changed", {
+            detail: l
+          }));
+        }, 100);
+      });
     }
   };
 }

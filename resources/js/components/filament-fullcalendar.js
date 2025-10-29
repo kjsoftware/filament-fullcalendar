@@ -125,12 +125,50 @@ export default function fullcalendar({
                         resource,
                     )
                 },
+                resources: (fetchInfo, successCallback, failureCallback) => {
+                    this.$wire.fetchResources(fetchInfo)
+                        .then(successCallback)
+                        .catch(failureCallback);
+                },                
+                viewDidMount: (arg) => {
+                    window.dispatchEvent(new CustomEvent('filament-fullcalendar--view-changed', {
+                        detail: arg
+                    }));
+                },
+                datesSet: (arg) => {
+                    // Dispatch an event whenever the visible date range changes
+                    const payload = {
+                        ...arg,
+                        start: arg.start,
+                        end: arg.end,
+                        view: {
+                            ...arg.view,
+                            type: arg.view.type,
+                            currentStart: arg.view.currentStart,
+                            currentEnd: arg.view.currentEnd
+                        }
+                    };
+
+                    window.dispatchEvent(new CustomEvent('filament-fullcalendar--dates-changed', {
+                        detail: payload
+                    }));
+                },
+                loading: (isLoading) => {
+                    if (!isLoading) {
+                        setTimeout(() => {
+                            window.dispatchEvent(new CustomEvent('filament-fullcalendar--loaded'));
+                        }, 0);
+                    }
+                }                
             })
 
             this.calendar.render()
 
-            window.addEventListener('filament-fullcalendar--refresh', () =>
-                this.calendar.refetchEvents(),
+            // Store calendar instance on the DOM element for external access
+            this.$el._fullCalendar = this.calendar;            
+
+            window.addEventListener('filament-fullcalendar--refresh', () =>            
+                this.calendar.refetchEvents(); this.calendar.refetchResources();}
             )
 
             window.addEventListener('filament-fullcalendar--prev', () =>
@@ -149,9 +187,24 @@ export default function fullcalendar({
                 this.calendar.changeView(event.detail.view),
             )
 
-            window.addEventListener('filament-fullcalendar--goto', (event) =>
-                this.calendar.gotoDate(event.detail.date),
-            )
+            window.addEventListener('filament-fullcalendar--goto', (event) => {
+                // Parse the date and make sure it works in all calendar views
+                const dateStr = event.detail.date;
+                this.calendar.gotoDate(dateStr);
+
+                // After going to date, we need to dispatch the dates-changed event
+                setTimeout(() => {
+                    const arg = {
+                        view: this.calendar.view,
+                        start: this.calendar.view.activeStart,
+                        end: this.calendar.view.activeEnd
+                    };
+
+                    window.dispatchEvent(new CustomEvent('filament-fullcalendar--dates-changed', {
+                        detail: arg
+                    }));
+                }, 100);
+            })
         },
     }
 }

@@ -4,9 +4,18 @@
 
 <x-filament-widgets::widget>
     <x-filament::section>
-        <div class="flex justify-end flex-1 mb-4">
-            <x-filament::actions :actions="$this->getCachedHeaderActions()" class="shrink-0" />
-        </div>
+
+        <x-slot name="heading">
+            <div class="flex justify-end flex-1 font-normal">
+                <div class="flex flex-1 items-center justify-start">
+                    {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::PAGE_HEADER_ACTIONS_BEFORE, scopes: [static::class]) }}
+                </div>
+
+                <x-filament::actions :actions="$this->getCachedHeaderActions()" class="shrink-0" />
+
+                {{ \Filament\Support\Facades\FilamentView::renderHook(\Filament\View\PanelsRenderHook::PAGE_HEADER_ACTIONS_AFTER, scopes: [static::class]) }}
+            </div>
+        </x-slot>
 
         <div wire:ignore x-load
             x-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('filament-fullcalendar-alpine', 'saade/filament-fullcalendar') }}"
