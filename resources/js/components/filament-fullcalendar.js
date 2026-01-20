@@ -167,9 +167,10 @@ export default function fullcalendar({
             // Store calendar instance on the DOM element for external access
             this.$el._fullCalendar = this.calendar;            
 
-            window.addEventListener('filament-fullcalendar--refresh', () =>            
-                this.calendar.refetchEvents(); this.calendar.refetchResources();}
-            )
+            window.addEventListener('filament-fullcalendar--refresh', () => {
+                this.calendar.refetchEvents();
+                this.calendar.refetchResources();
+            })
 
             window.addEventListener('filament-fullcalendar--prev', () =>
                 this.calendar.prev(),
