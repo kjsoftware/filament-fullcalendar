@@ -189,7 +189,10 @@ export default function fullcalendar({
 
             window.addEventListener('filament-fullcalendar--refresh', () => {
                 this.calendar.refetchEvents()
-                this.calendar.refetchResources()
+                // refetchResources only exists when a resource plugin is loaded.
+                if (typeof this.calendar.refetchResources === 'function') {
+                    this.calendar.refetchResources()
+                }
             })
 
             window.addEventListener('filament-fullcalendar--prev', () =>

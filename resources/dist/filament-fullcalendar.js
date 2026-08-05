@@ -19675,7 +19675,7 @@ function MR({
           }, 0);
         }
       }), this.calendar.render(), this.$el._fullCalendar = this.calendar, window.addEventListener("filament-fullcalendar--refresh", () => {
-        this.calendar.refetchEvents(), this.calendar.refetchResources();
+        this.calendar.refetchEvents(), typeof this.calendar.refetchResources == "function" && this.calendar.refetchResources();
       }), window.addEventListener(
         "filament-fullcalendar--prev",
         () => this.calendar.prev()
