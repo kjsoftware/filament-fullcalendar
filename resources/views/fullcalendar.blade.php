@@ -31,6 +31,10 @@
                 eventContent: {!! htmlspecialchars($this->eventContent(), ENT_COMPAT) !!},
                 eventDidMount: {!! htmlspecialchars($this->eventDidMount(), ENT_COMPAT) !!},
                 eventWillUnmount: {!! htmlspecialchars($this->eventWillUnmount(), ENT_COMPAT) !!},
+                resourceLabelContent: {!! htmlspecialchars($this->resourceLabelContent(), ENT_COMPAT) !!},
+                slotLabelContent: {!! htmlspecialchars($this->slotLabelContent(), ENT_COMPAT) !!},
+                eventClick: {!! htmlspecialchars($this->eventClick(), ENT_COMPAT) !!},
+                dateClick: {!! htmlspecialchars($this->dateClick(), ENT_COMPAT) !!},
             })" class="filament-fullcalendar"></div>
     </x-filament::section>
 
