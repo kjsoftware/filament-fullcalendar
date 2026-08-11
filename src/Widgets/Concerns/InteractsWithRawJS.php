@@ -61,4 +61,65 @@ trait InteractsWithRawJS
             null
         JS;
     }
+
+    /**
+     * A Content Injection Input for resource (row) labels, e.g. extra detail under a
+     * room name. Only meaningful for resource views (resourceTimeline/-TimeGrid).
+     *
+     * @see https://fullcalendar.io/docs/resource-render-hooks
+     *
+     * @return string
+     */
+    public function resourceLabelContent(): string
+    {
+        return <<<JS
+            null
+        JS;
+    }
+
+    /**
+     * A Content Injection Input for slot (axis) labels, e.g. a custom header per slot.
+     *
+     * @see https://fullcalendar.io/docs/slot-render-hooks
+     *
+     * @return string
+     */
+    public function slotLabelContent(): string
+    {
+        return <<<JS
+            null
+        JS;
+    }
+
+    /**
+     * Handler for clicking an event. When supplied, it fully replaces the built-in
+     * behavior (URL navigation / onEventClick). It receives the FullCalendar arg
+     * ({ event, jsEvent, view, el, ... }); call jsEvent.preventDefault() yourself.
+     *
+     * @see https://fullcalendar.io/docs/eventClick
+     *
+     * @return string
+     */
+    public function eventClick(): string
+    {
+        return <<<JS
+            null
+        JS;
+    }
+
+    /**
+     * Handler for clicking a date/slot. When supplied, it fully replaces the built-in
+     * behavior and fires regardless of the `selectable` flag. It receives the
+     * FullCalendar dateClick arg ({ date, dateStr, allDay, view, resource, ... }).
+     *
+     * @see https://fullcalendar.io/docs/dateClick
+     *
+     * @return string
+     */
+    public function dateClick(): string
+    {
+        return <<<JS
+            null
+        JS;
+    }
 }

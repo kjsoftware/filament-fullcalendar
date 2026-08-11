@@ -13,6 +13,10 @@ export default function fullcalendar({
     eventContent,
     eventDidMount,
     eventWillUnmount,
+    resourceLabelContent,
+    slotLabelContent,
+    eventClick,
+    dateClick,
 }) {
     return {
         /** @type Calendar */
@@ -32,6 +36,8 @@ export default function fullcalendar({
                 eventContent,
                 eventDidMount,
                 eventWillUnmount,
+                resourceLabelContent,
+                slotLabelContent,
                 events: (info, successCallback, failureCallback) => {
                     this.$wire
                         .fetchEvents({
@@ -42,7 +48,14 @@ export default function fullcalendar({
                         .then(successCallback)
                         .catch(failureCallback)
                 },
-                eventClick: ({ event, jsEvent }) => {
+                eventClick: (arg) => {
+                    // A widget-supplied handler fully replaces the built-in behavior.
+                    if (eventClick) {
+                        eventClick(arg)
+                        return
+                    }
+
+                    const { event, jsEvent } = arg
                     jsEvent.preventDefault()
 
                     if (event.url) {
@@ -105,14 +118,21 @@ export default function fullcalendar({
                         revert()
                     }
                 },
-                dateClick: ({ dateStr, allDay, view, resource }) => {
+                dateClick: (arg) => {
+                    // A widget-supplied handler fully replaces the built-in behavior
+                    // and fires regardless of the `selectable` flag.
+                    if (dateClick) {
+                        dateClick(arg)
+                        return
+                    }
+
                     if (!selectable) return
                     this.$wire.onDateSelect(
-                        dateStr,
+                        arg.dateStr,
                         null,
-                        allDay,
-                        view,
-                        resource,
+                        arg.allDay,
+                        arg.view,
+                        arg.resource,
                     )
                 },
                 select: ({ startStr, endStr, allDay, view, resource }) => {
@@ -167,9 +187,13 @@ export default function fullcalendar({
             // Store calendar instance on the DOM element for external access
             this.$el._fullCalendar = this.calendar;            
 
-            window.addEventListener('filament-fullcalendar--refresh', () =>            
-                this.calendar.refetchEvents(); this.calendar.refetchResources();}
-            )
+            window.addEventListener('filament-fullcalendar--refresh', () => {
+                this.calendar.refetchEvents()
+                // refetchResources only exists when a resource plugin is loaded.
+                if (typeof this.calendar.refetchResources === 'function') {
+                    this.calendar.refetchResources()
+                }
+            })
 
             window.addEventListener('filament-fullcalendar--prev', () =>
                 this.calendar.prev(),
