@@ -122,4 +122,22 @@ trait InteractsWithRawJS
             null
         JS;
     }
+
+    /**
+     * A visible-range Input. When supplied as a function it receives the current date and
+     * must return a { start, end } range; FullCalendar then renders exactly that range.
+     * Because a view's own `duration`/`dayCount` takes precedence, this only affects views
+     * configured without either — use it to give a single custom view a computed range
+     * (e.g. the whole weeks spanning a month) while other views keep their durations.
+     *
+     * @see https://fullcalendar.io/docs/visibleRange
+     *
+     * @return string
+     */
+    public function visibleRange(): string
+    {
+        return <<<JS
+            null
+        JS;
+    }
 }

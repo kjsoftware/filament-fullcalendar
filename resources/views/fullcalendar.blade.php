@@ -35,6 +35,7 @@
                 slotLabelContent: {!! htmlspecialchars($this->slotLabelContent(), ENT_COMPAT) !!},
                 eventClick: {!! htmlspecialchars($this->eventClick(), ENT_COMPAT) !!},
                 dateClick: {!! htmlspecialchars($this->dateClick(), ENT_COMPAT) !!},
+                visibleRange: {!! htmlspecialchars($this->visibleRange(), ENT_COMPAT) !!},
             })" class="filament-fullcalendar"></div>
     </x-filament::section>
 
