@@ -17,6 +17,7 @@ export default function fullcalendar({
     slotLabelContent,
     eventClick,
     dateClick,
+    visibleRange,
 }) {
     return {
         /** @type Calendar */
@@ -31,6 +32,10 @@ export default function fullcalendar({
                 editable,
                 selectable,
                 ...config,
+                // Only applied when a widget supplies it. A view's own duration/dayCount
+                // takes precedence in FullCalendar, so this only shapes views configured
+                // without either (e.g. a custom "weeks spanning a month" timeline view).
+                ...(visibleRange && { visibleRange }),
                 locales,
                 eventClassNames,
                 eventContent,
